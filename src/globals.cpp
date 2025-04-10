@@ -32,7 +32,7 @@ adi::Pneumatics intakestack('E', false);
 adi::Pneumatics wallstakearm('A', false);
 
 // Inertial Sensor
-Imu inertial(9);
+Imu inertial(15);
 // Distance autoclamp(3);
 Distance ringsensor(1);
 Distance stakesensor(7);
@@ -45,7 +45,7 @@ Rotation climbEnc(3);
 // horizontal tracking wheel. 2" diameter, 3.7" offset, back of the robot
 lemlib::TrackingWheel horizontal(&horizontalEnc, 2, -3.76); //-3.76 was the previous offset
 // vertical tracking wheel. 2" diameter, " -1.4375" offset
-lemlib::TrackingWheel vertical(&verticalEnc, 2.05, -1.4375); 
+lemlib::TrackingWheel vertical(&verticalEnc, 2.05, -1.248); 
 
 
 // drivetrain settings
@@ -104,3 +104,4 @@ bool rush = true;
 bool elims = false;
 bool climbing = false;
 bool coloursort = true;
+double original_hue;

@@ -16,11 +16,12 @@ void allianceStake(int side) {
     chassis.setBrakeMode(E_MOTOR_BRAKE_HOLD);
 
     chassis.arcade(48, 0);
-    delay(500);
+    delay(450);
     manualintake = true;
-    chassis.arcade(0, 0);
     setIntakeSpeed(-127, 0);
-    delay(400);
+    delay(50);
+    chassis.arcade(0, 0);
+    delay(300);
     manualintake=false;
     
 }
@@ -196,24 +197,22 @@ void ringSide(){
 
     //goal 1
     double xcoordinate = chassis.getPose().x;
-    chassis.moveToPoint(xcoordinate, -28, 1000, {.forwards=false, .maxSpeed=127, .minSpeed=50, .earlyExitRange=18});
-    chassis.moveToPoint(xcoordinate, -28, 1000, {.forwards=false, .maxSpeed=50, .minSpeed=5});
-    while (chassis.getPose().y < -32) {
-        delay(50);
-    }
+    chassis.moveToPoint(xcoordinate, -28, 1000, {.forwards=false, .maxSpeed=127, .minSpeed=80, .earlyExitRange=18});
+    chassis.moveToPoint(xcoordinate, -28, 1000, {.forwards=false, .maxSpeed=80, .minSpeed=5});
+    chassis.waitUntil(20);
     clamp.extend();
     chassis.waitUntilDone();
     delay(100);
 
     //ring 1&2
-    chassis.turnToPoint((a ? -37 : 40), (a ? -14.5 : -9), 800);
+    chassis.turnToPoint((a ? -37 : 40), (a ? -13 : -9), 800);
     delay(200);
     setIntakeSpeed(127, 127);
-    chassis.moveToPoint((a ? -37 : 40), (a ? -14.5 : -9), 800, {.maxSpeed=70, .minSpeed=10});
+    chassis.moveToPoint((a ? -37 : 40), (a ? -13 : -9), 800, {.maxSpeed=70, .minSpeed=10});
     chassis.waitUntilDone();
     delay(100);
     chassis.swingToHeading(alliance*-89, a ? DriveSide::LEFT : DriveSide::RIGHT, 800);
-    chassis.moveToPoint((a ? -55 : 55), (a ? -15 : -9), 800, {.maxSpeed=70, .minSpeed=10});
+    chassis.moveToPoint((a ? -55 : 55), (a ? -13 : -8), 800, {.maxSpeed=70, .minSpeed=10});
 
     //ring 3
     chassis.turnToPoint(alliance*-30, (a ? -20 : -15), 500, {.forwards = false});
@@ -223,14 +222,24 @@ void ringSide(){
     chassis.turnToPoint(alliance*-45, (a ? -26 : -20), 400);
     chassis.moveToPoint(alliance*-45, (a ? -26 : -20), 900);
 
-    chassis.turnToPoint((a ? -56 : 61), (a ? -57: -48), 800, {.maxSpeed=100, .minSpeed=20});
+    chassis.turnToPoint((a ? -54 : 61), (a ? -51: -48), 800, {.maxSpeed=100, .minSpeed=20});
     chassis.waitUntilDone();
-    chassis.moveToPoint((a ? -56 : 61), (a ? -57: -48), 1500, {.maxSpeed=100, .minSpeed=20});
+    chassis.moveToPoint((a ? -54 : 61), (a ? -51: -48), 1500, {.maxSpeed=100, .minSpeed=20});
     chassis.waitUntilDone();
     stage=0;
     chassis.turnToHeading((a ? 215: 155), 500, {.maxSpeed=80, .minSpeed=30}, false);
     chassis.waitUntilDone();
 
+    setIntakeSpeed(127, -127);
+    chassis.arcade(127, 0);
+    delay(300);
+    chassis.arcade(0, 0);
+    setIntakeSpeed(127, 127);
+    delay(300);
+
+
+    chassis.arcade(-127, 0);
+    delay(300);
     setIntakeSpeed(127, -127);
     chassis.arcade(127, 0);
     delay(300);
@@ -242,9 +251,10 @@ void ringSide(){
     chassis.turnToPoint(alliance*-52, -52, 800, {.forwards=false});
     chassis.moveToPoint(alliance*-52, -52, 800, {.forwards=false});
 
-    chassis.turnToPoint(alliance*-10, (a ? -50 : -52), 800);
-    chassis.moveToPoint(alliance*-10, (a ? -50 : -52), 1500);
-    chassis.moveToPoint(alliance*20, (a ? -50 : -52), 2000, {.maxSpeed=40});
+    chassis.turnToPoint(alliance*-15, (a ? -50 : -52), 800);
+    chassis.moveToPoint(alliance*-15, (a ? -50 : -52), 1500);
+    chassis.moveToPoint(alliance*25, (a ? -50 : -52), 2000, {.maxSpeed=40});
+    chassis.waitUntilDone();
 
 }
 

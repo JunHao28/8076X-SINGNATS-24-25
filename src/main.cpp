@@ -7,6 +7,9 @@ bool beep = false;
 
 void initialize()
 {   
+    // if (optical.get_proximity() < 200) {
+    // }
+
     chassis.calibrate(true);
 
     //Mechanism Tasks (More information in Mechcontrol.cpp)
@@ -15,6 +18,7 @@ void initialize()
     Task climbTask(climbControl); //Climbing sequence
     // print position to brain screen
     pros::lcd::initialize(); // initialize brain screen
+    original_hue = optical.get_hue();
     // chassis.calibrate(); // calibrate sensors
     // print position to brain screen
     pros::Task screen_task([&]() {
@@ -23,6 +27,8 @@ void initialize()
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+            pros::lcd::print(3, "hue %f", original_hue);
+            pros::lcd::print(4, "act hue %f", optical.get_hue());
             // delay to save resources
             pros::delay(20);
         }
@@ -41,7 +47,7 @@ ASSET(path_txt);
 
 void autonomous()
 {
-//     double start = millis(); 
+    double start = millis(); 
 //     autons = true;
 //     autoclampBool = true;
 
@@ -83,7 +89,7 @@ void autonomous()
         // set position to x:0, y:0, heading:0
    
        // set position to x:0, y:0, heading:0
-    chassis.setPose(0, 0, 0);
+    // chassis.setPose(0, 0, 0);
 //     chassis.moveToPose(
 //     24, // x = 24
 //     48, // y = 48
@@ -91,7 +97,11 @@ void autonomous()
 //     10000, // timeout of 4000ms
 //     {.lead = 0.4, .minSpeed = 100}
 // );
-    chassis.moveToPose(48, 72, 0, 4000, {.lead = -0.5});
+    // chassis.
+    rush = false;
+    ringSide();
+    chassis.waitUntilDone();
+    screen::print(TEXT_SMALL, 300, 180, "Time elapsed: %f", (millis() - start)/1000);
 
 }
 

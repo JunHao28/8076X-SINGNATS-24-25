@@ -66,3 +66,4 @@ extern bool rush;
 extern bool elims;
 extern bool climbing;
 extern bool coloursort;
+extern double original_hue;

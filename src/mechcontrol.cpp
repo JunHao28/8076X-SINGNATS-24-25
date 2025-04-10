@@ -82,15 +82,16 @@ void intakeControl() {
             } else {
                 intakejam=0;
             }
+
             optical.set_led_pwm(50);
 
-            if (intakeSpeed1 == 127 && ringsensor.get_distance() < 50 && coloursort) {
-                if (optical.get_hue() > 70 && alliance == 1) {
+            if (intakeSpeed1 == 127) {
+                if ((optical.get_hue()-original_hue)/original_hue > 0.5 && alliance == 1) {
                     // Task::delay(50);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);
-                }else if (optical.get_hue() < 50 && alliance == -1){
+                }else if ((optical.get_hue()-original_hue)/original_hue < -0.5 && alliance == -1){
                     // Task::delay(50);
                     intake.move(-127);
                     Task::delay(100);
