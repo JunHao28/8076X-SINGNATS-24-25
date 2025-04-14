@@ -99,7 +99,8 @@ void autonomous()
 // );
     // chassis.
     rush = false;
-    ringSideRush();
+    soloAWP();
+    // ringSideRush();
     chassis.waitUntilDone();
     screen::print(TEXT_SMALL, 300, 180, "Time elapsed: %f", (millis() - start)/1000);
 
