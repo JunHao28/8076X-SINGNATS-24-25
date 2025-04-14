@@ -9,6 +9,8 @@ void moveDistance(double distance, lemlib::MoveToPointParams params);
 
 void ringSide();
 
+void ringSideRush();
+
 void goalSide();
 
 void goalSideSafe();

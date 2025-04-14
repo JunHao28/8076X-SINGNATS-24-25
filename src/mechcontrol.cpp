@@ -87,12 +87,12 @@ void intakeControl() {
 
             if (intakeSpeed1 == 127) {
                 if ((optical.get_hue()-original_hue)/original_hue > 0.5 && alliance == 1) {
-                    // Task::delay(50);
+                    Task::delay(50);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);
                 }else if ((optical.get_hue()-original_hue)/original_hue < -0.5 && alliance == -1){
-                    // Task::delay(50);
+                    Task::delay(50);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);
