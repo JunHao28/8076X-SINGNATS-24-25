@@ -13,7 +13,7 @@ void ringSideRush();
 
 void goalSide();
 
-void goalSideSafe();
+void goalSideRush();
 
 void skills();
 

@@ -37,6 +37,12 @@ void intakeControl() {
     int intakejam = 0;
     // int target = 0;
     while (true) {
+        if (!coloursort) {
+            intake.move(intakeSpeed1);
+            intake2.move(intakeSpeed2);
+            Task::delay(20);
+            continue;
+        }
         if (wallstake) {
             if (stakesensor.get_distance() < 50) {
                 if (!override) {
@@ -87,12 +93,12 @@ void intakeControl() {
 
             if (intakeSpeed1 == 127) {
                 if ((optical.get_hue()-original_hue)/original_hue > 0.4 && alliance == 1) {
-                    Task::delay(50);
+                    Task::delay(10);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);
                 }else if ((optical.get_hue()-original_hue)/original_hue < -0.4 && alliance == -1){
-                    Task::delay(50);
+                    Task::delay(10);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);
@@ -254,7 +260,7 @@ void climbControl() {
             } else {
                 Task::delay(400);
                 if (climbsection == 4) {
-                    Task::delay(1000);
+                    Task::delay(700);
                 }
                 climbsection += 1;
                 left.move(0);
