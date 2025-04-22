@@ -95,13 +95,13 @@ lemlib::OdomSensors sensors(&vertical, // vertical tracking wheel 1
 lemlib::Chassis chassis(drivetrain, linearController, angularController, sensors);
 
 int autonnum = 3;
-int alliance = 1;
+int alliance = -1;
 bool autons = true;
 bool autoclampBool = true;
 bool wallstake = false;
 bool manualintake = false;
-bool rush = true;
-bool elims = true;
+bool aStake = true;
+bool elims = false;
 bool climbing = false;
 bool coloursort = true;
 double original_hue;

@@ -5,23 +5,27 @@ double test;
 
 int intakeSpeed1;
 int intakeSpeed2;
-int stage = 0;
-int sector = 0;
-int intakeposition = 0;
+
+int ringUnseenCount=0;
+double pendingOriginalHue=100;
 
 void ringControl() {
+    delay(1000);
     while (true) {
-        int sensorvalue = ringsensor.get();
         if (optical.get_proximity() > 200) {
-            if (intakeposition == 0) {
-                intakeposition = intake.get_position();
+            ringUnseenCount = 0;
+            Task::delay(100);
+            continue;
+        } else {
+            ringUnseenCount += 1;
+            if (ringUnseenCount <= 10) {
+                Task::delay(50);
+                pendingOriginalHue = optical.get_hue();
             }
-            if (stage < 2) {
-                stage = 2;
-            }            
-        } else if (sensorvalue < 15) {
-            if (stage == 0) {
-                stage = 1;
+    
+            if (ringUnseenCount >= 100) {
+                original_hue = pendingOriginalHue;
+                ringUnseenCount = 0;
             }
         }
 
@@ -93,12 +97,12 @@ void intakeControl() {
 
             if (intakeSpeed1 == 127) {
                 if ((optical.get_hue()-original_hue)/original_hue > 0.4 && alliance == 1) {
-                    Task::delay(10);
+                    Task::delay(30);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);
                 }else if ((optical.get_hue()-original_hue)/original_hue < -0.4 && alliance == -1){
-                    Task::delay(10);
+                    Task::delay(30);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);

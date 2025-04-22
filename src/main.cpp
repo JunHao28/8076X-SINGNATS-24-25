@@ -98,17 +98,20 @@ void autonomous()
 //     {.lead = 0.4, .minSpeed = 100}
 // );
     // chassis.
-    rush = false;
     // soloAWP();
-    goalSideRush();
+    // goalSideRush();
+    // goalSide();
+    // ringSide();
+
     // ringSideRush();
+    // goalSideRush();
+    soloAWP();
     chassis.waitUntilDone();
     screen::print(TEXT_SMALL, 300, 180, "Time elapsed: %f", (millis() - start)/1000);
 
 }
 
 void opcontrol() {
-    stage=0;
     autons = false;
     bool shift = false;
     int intakeSpeed = 0;

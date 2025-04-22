@@ -62,7 +62,7 @@ extern bool autons;
 extern bool autoclampBool;
 extern bool wallstake;
 extern bool manualintake;
-extern bool rush;
+extern bool aStake;
 extern bool elims;
 extern bool climbing;
 extern bool coloursort;
