@@ -105,7 +105,8 @@ void autonomous()
 
     // ringSideRush();
     // goalSideRush();
-    soloAWP();
+    // soloAWP();
+    goalSide();
     chassis.waitUntilDone();
     screen::print(TEXT_SMALL, 300, 180, "Time elapsed: %f", (millis() - start)/1000);
 

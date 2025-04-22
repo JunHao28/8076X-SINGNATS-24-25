@@ -18,15 +18,20 @@ void ringControl() {
             continue;
         } else {
             ringUnseenCount += 1;
-            if (ringUnseenCount <= 10) {
-                Task::delay(50);
-                pendingOriginalHue = optical.get_hue();
-            }
-    
-            if (ringUnseenCount >= 100) {
-                original_hue = pendingOriginalHue;
-                ringUnseenCount = 0;
-            }
+        }
+
+        if (ringUnseenCount == 1) {
+            Task::delay(50);
+            pendingOriginalHue = optical.get_hue();
+        } else if (abs(pendingOriginalHue - optical.get_hue()) > 10) {
+            ringUnseenCount = 0;
+            Task::delay(100);
+            continue;
+        }
+
+        if (ringUnseenCount >= 50) {
+            original_hue = pendingOriginalHue;
+            ringUnseenCount = 0;
         }
 
         Task::delay(5);
@@ -97,12 +102,12 @@ void intakeControl() {
 
             if (intakeSpeed1 == 127) {
                 if ((optical.get_hue()-original_hue)/original_hue > 0.4 && alliance == 1) {
-                    Task::delay(30);
+                    Task::delay(20);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);
                 }else if ((optical.get_hue()-original_hue)/original_hue < -0.4 && alliance == -1){
-                    Task::delay(30);
+                    Task::delay(20);
                     intake.move(-127);
                     Task::delay(100);
                     intake.move(127);
