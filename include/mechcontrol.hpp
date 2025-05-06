@@ -6,7 +6,6 @@ extern int climbsection;
 
 void intakeControl();
 void ringControl();
-void autoclampControl();
 void setIntakeSpeed(int speed1, int speed2);
 void climbControl();
 void wallstakeExtend();

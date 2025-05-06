@@ -3,8 +3,6 @@
 #include <ostream>
 #include "globals.hpp"
 
-bool beep = false;
-
 void initialize()
 {   
     // if (optical.get_proximity() < 200) {
@@ -21,22 +19,22 @@ void initialize()
     original_hue = optical.get_hue();
     // chassis.calibrate(); // calibrate sensors
     // print position to brain screen
-    pros::Task screen_task([&]() {
-        while (true) {
-            // print robot location to the brain screen
-            pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
-            pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
-            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-            pros::lcd::print(3, "hue %f", original_hue);
-            pros::lcd::print(4, "act hue %f", optical.get_hue());
-            // delay to save resources
-            pros::delay(20);
-        }
-    });
+    // pros::Task screen_task([&]() {
+    //     while (true) {
+    //         // print robot location to the brain screen
+    //         pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
+    //         pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
+    //         pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+    //         pros::lcd::print(3, "hue %f", original_hue);
+    //         pros::lcd::print(4, "act hue %f", optical.get_hue());
+    //         // delay to save resources
+    //         pros::delay(20);
+    //     }
+    // });
 
     //Display Tasks (More information in display.cpp)
-//    Task displayTask(displayControl); //Brain screen with auton selector
-//     Task controllerTask(controllerControl);
+    Task displayTask(displayControl); //Brain screen with auton selector
+    Task controllerTask(controllerControl);
 }
 
 void disabled() {}
@@ -49,39 +47,39 @@ void autonomous()
 {
     double start = millis(); 
 //     autons = true;
-//     autoclampBool = true;
 
-    // //Switch case for auton selector
-    // switch (autonnum)
-    // {
-    // case 1:
-    //     rush=true;
-    //     goalSideSafe();
-    //     break;
+    //Switch case for auton selector
+    switch (autonnum)
+    {
+    case 1:
+        elims = false;
+        ringSide();
+        break;
 
-    // case 2:
-    //     elims = true;
-    //     goalSideSafe();
-    //     break;
+    case 2:
+        elims = true;
+        ringSide();
+        break;
 
-    // case 3:
-    //     rush = false;
-    //     ringSide();
-    //     break;
+    case 3:
+        elims = false;
+        goalSide();
+        break;
 
-    // case 4:
-    //     rush = true;
-    //     ringSide();
-    //     break;
-
-    // case 5:
-    //     soloAWP();
-    //     break;
-    // case 6:
-    //     alliance = 1;
-    //     skills();
-    //     break;
-    // }
+    case 4:
+        elims = true;
+        goalSide();
+        break;
+    case 5:
+        goalSideRush();
+        break;
+    case 6:
+        soloAWP();
+        break;
+    case 7: 
+        skills();
+        break;
+    }
 
     // chassis.waitUntilDone();
 
@@ -106,7 +104,8 @@ void autonomous()
     // ringSideRush();
     // goalSideRush();
     // soloAWP();
-    goalSide();
+    // goalSide();
+    // goalSideRush();
     chassis.waitUntilDone();
     screen::print(TEXT_SMALL, 300, 180, "Time elapsed: %f", (millis() - start)/1000);
 
@@ -150,7 +149,18 @@ void opcontrol() {
         }
 
         if (master.get_digital_new_press(DIGITAL_X)) {
-            coloursort = !coloursort;
+            coloursort = false;
+            manualintake = true;
+        }
+
+        if (master.get_digital_new_press(DIGITAL_A)) {
+            coloursort = false;
+            manualintake = false;
+        }
+
+        if (master.get_digital_new_press(DIGITAL_Y)) {
+            coloursort = true;
+            manualintake = false;
         }
 
         if (!setheight) {
@@ -161,9 +171,9 @@ void opcontrol() {
             }
         }
 
-        if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
-            wallstake = !wallstake;
-        }
+        // if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)) {
+        //     wallstake = !wallstake;
+        // }
 
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
             shift = true;
@@ -192,10 +202,8 @@ void opcontrol() {
                 } else if (wallstakearm.is_extended()) {
                     wallstakearm.retract();
                     wallstakeBool = false;
-                    // manualintake=false;
                 } else if (!wallstake) {
                     wallstake = true;
-                    manualintake = true;
                 }
             }
         }
@@ -210,18 +218,12 @@ void opcontrol() {
         
         if (wallstakeBool) {
             setIntakeSpeed(0, intakeSpeed);
-        } else if (manualintake) {
-            setIntakeSpeed(intakeSpeed, intakeSpeed);
         } else {
             setIntakeSpeed(intakeSpeed, intakeSpeed);
         }
 
         if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_A)){
             intakestack.toggle();
-        }
-
-        if (master.get_digital_new_press(DIGITAL_Y)){
-            wallstake = !wallstake;
         }
 
         pros::delay(10);

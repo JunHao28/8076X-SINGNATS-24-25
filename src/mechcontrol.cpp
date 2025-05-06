@@ -46,7 +46,7 @@ void intakeControl() {
     int intakejam = 0;
     // int target = 0;
     while (true) {
-        if (!coloursort) {
+        if (manualintake) {
             intake.move(intakeSpeed1);
             intake2.move(intakeSpeed2);
             Task::delay(20);
@@ -98,29 +98,29 @@ void intakeControl() {
                 intakejam=0;
             }
 
-            optical.set_led_pwm(50);
+            optical.set_led_pwm(60);
 
-            if (intakeSpeed1 == 127) {
-                if ((optical.get_hue()-original_hue)/original_hue > 0.4 && alliance == 1) {
-                    Task::delay(20);
-                    intake.move(-127);
-                    Task::delay(100);
-                    intake.move(127);
-                }else if ((optical.get_hue()-original_hue)/original_hue < -0.4 && alliance == -1){
-                    Task::delay(20);
-                    intake.move(-127);
-                    Task::delay(100);
-                    intake.move(127);
+            if (coloursort) {
+                if (intakeSpeed1 == 127) {
+                    if ((optical.get_hue()-original_hue)/original_hue > 0.3 && alliance == 1) {
+                        // Task::delay(20);
+                        intake.move(-127);
+                        Task::delay(100);
+                        intake.move(127);
+                    }else if ((optical.get_hue()-original_hue)/original_hue < -0.3 && alliance == -1){
+                        // Task::delay(20);
+                        intake.move(-127);
+                        Task::delay(100);
+                        intake.move(127);
+                    } else {
+                        intake.move(intakeSpeed1);
+                    }
                 } else {
                     intake.move(intakeSpeed1);
                 }
             } else {
                 intake.move(intakeSpeed1);
             }
-            // } else {
-            //     // optical.set_led_pwm(0);
-            //     intake.move(intakeSpeed1);
-            // }
             
         }
         intake2.move(intakeSpeed2);
@@ -224,20 +224,6 @@ void setIntakeSpeed(int speed1, int speed2) {
     intakeSpeed2 = speed2;
 }
 
-// void autoclampControl() {
-//     // clamp.set_value(true);
-//     while (true) {
-//         if (autoclampBool && autons) {
-//             if (autoclamp.get_distance() < 30) {
-//                 clamp.set_value(true);
-//             }
-//             Task::delay(100);
-//         } else {
-//             Task::delay(500);
-//         }
-//     }
-// }
-
 int climbsection = 0;
 
 void climbControl() {
@@ -269,7 +255,7 @@ void climbControl() {
             } else {
                 Task::delay(400);
                 if (climbsection == 4) {
-                    Task::delay(700);
+                    Task::delay(200);
                 }
                 climbsection += 1;
                 left.move(0);

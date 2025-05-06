@@ -29,7 +29,6 @@ extern pros::adi::Pneumatics intakestack;
 extern pros::adi::Pneumatics wallstakearm;
 
 extern pros::Optical optical;
-// extern pros::Distance autoclamp;
 extern pros::Distance ringsensor;
 extern pros::Distance stakesensor;
 
@@ -56,10 +55,12 @@ extern lemlib::OdomSensors sensors;
 // create the chassis
 extern lemlib::Chassis chassis;
 
+
+extern bool beep;
+
 extern int autonnum;
 extern int alliance;
 extern bool autons;
-extern bool autoclampBool;
 extern bool wallstake;
 extern bool manualintake;
 extern bool aStake;

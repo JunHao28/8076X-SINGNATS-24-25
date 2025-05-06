@@ -33,7 +33,6 @@ adi::Pneumatics wallstakearm('A', false);
 
 // Inertial Sensor
 Imu inertial(15);
-// Distance autoclamp(3);
 Distance ringsensor(1);
 Distance stakesensor(7);
 
@@ -94,14 +93,18 @@ lemlib::OdomSensors sensors(&vertical, // vertical tracking wheel 1
 // create the chassis
 lemlib::Chassis chassis(drivetrain, linearController, angularController, sensors);
 
+bool beep = false;
+
 int autonnum = 3;
-int alliance = -1;
+int alliance = 1;
+bool aStake = false;
+bool elims = true;
+
 bool autons = true;
-bool autoclampBool = true;
+
 bool wallstake = false;
 bool manualintake = false;
-bool aStake = true;
-bool elims = false;
-bool climbing = false;
 bool coloursort = true;
 double original_hue;
+
+bool climbing = false;

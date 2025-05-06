@@ -17,12 +17,10 @@ void allianceStake(int side) {
 
     chassis.arcade(48, 0);
     delay(450);
-    manualintake = true;
     setIntakeSpeed(-127, 0);
     delay(50);
     chassis.arcade(0, 0);
     delay(400);
-    manualintake=false;
     
 }
 
@@ -89,9 +87,10 @@ void soloAWP() {
     chassis.turnToPoint((a ? 45 : -45), (a ? -20 : -20), 800);
     chassis.moveToPoint((a ? 45 : -45), (a ? -20 : -20), 800);
     chassis.waitUntilDone();
-    chassis.turnToPoint((a ? 13 : -13), (a ? -10 : -10), 300, {.forwards=false});
-    chassis.moveToPoint((a ? 13 : -13), (a ? -10 : -10), 1000, {.forwards=false});
+    chassis.turnToPoint((a ? 15 : -15), (a ? -10 : -10), 300, {.forwards=false});
+    chassis.moveToPoint((a ? 15 : -15), (a ? -10 : -10), 1000, {.forwards=false});
     chassis.waitUntilDone();
+    delay(200);
     setIntakeSpeed(0, 0);
 }
 
@@ -110,7 +109,6 @@ void ringSide(){
     } else {
         chassis.setPose(alliance*-24, -53.6, 180);
         chassis.setBrakeMode(E_MOTOR_BRAKE_HOLD);
-        manualintake=true;
     }
 
     //goal 1
@@ -123,14 +121,14 @@ void ringSide(){
     delay(100);
 
     //ring 1&2
-    chassis.turnToPoint((a ? -37 : 37), (a ? -13 : -11), 800);
+    chassis.turnToPoint((a ? -37 : 37), (a ? -13 : -12), 800);
     delay(200);
     setIntakeSpeed(127, 127);
-    chassis.moveToPoint((a ? -37 : 37), (a ? -13 : -11), 800, {.maxSpeed=70, .minSpeed=10});
+    chassis.moveToPoint((a ? -37 : 37), (a ? -13 : -12), 800, {.maxSpeed=70, .minSpeed=10});
     chassis.waitUntilDone();
     delay(100);
     chassis.swingToHeading(alliance*-89, a ? DriveSide::LEFT : DriveSide::RIGHT, 800);
-    chassis.moveToPoint((a ? -55 : 55), (a ? -11 : -9), 800, {.maxSpeed=70, .minSpeed=10});
+    chassis.moveToPoint((a ? -55 : 55), (a ? -11 : -10), 800, {.maxSpeed=70, .minSpeed=10});
 
     //ring 3
     chassis.turnToPoint(alliance*-30, (a ? -17 : -17), 500, {.forwards = false});
@@ -217,29 +215,20 @@ void ringSideRush(){
         chassis.turnToPoint(alliance*-46, -16, 1000);
         chassis.moveToPoint(alliance*-46, -16, 1000);
 
-        // chassis.moveToPoint(-24, -24, 1000, {.forwards=false});
-        chassis.turnToPoint(alliance*-50, -8, 1000);
-        chassis.moveToPoint(alliance*-50, -8, 1000, {.maxSpeed=50});
+        chassis.turnToPoint(alliance*-50, -9, 1000);
+        chassis.moveToPoint(alliance*-50, -9, 1000, {.maxSpeed=50});
 
         chassis.turnToPoint(alliance*-46, -18, 1000, {.forwards=false});
         chassis.moveToPoint(alliance*-46, -18, 1000, {.forwards=false});
-        // chassis.turnToPoint(alliance*-36, -48, 1000);
-        // chassis.moveToPoint(alliance*-36, -48, 1000);
     } else {
-
-        // chassis.turnToPoint(alliance*-30, -10, 1000);
-        // chassis.moveToPoint(alliance*-30, -10, 1000, {.maxSpeed=50});
-        // sweeper.extend();
-        // delay(100);
-        // setIntakeSpeed(-127, -127);
 
 
         setIntakeSpeed(127, 127);
         // chassis.turnToPoint(alliance*-24, -24, 1000, {.forwards=false});
         // chassis.moveToPoint(alliance*-24, -24, 1000, {.forwards=false});
 
-        chassis.turnToPoint(alliance*-53, -17, 1000);
-        chassis.moveToPoint(alliance*-53, -17, 1000);
+        chassis.turnToPoint(alliance*-50, -17, 1000);
+        chassis.moveToPoint(alliance*-50, -17, 1000);
 
 
         chassis.turnToPoint(alliance*-48, -8, 1000);
@@ -256,17 +245,19 @@ void ringSideRush(){
 
     }
 
-    chassis.turnToPoint((a ? 54 : -54), (a ? -50: -50), 800, {.maxSpeed=100, .minSpeed=20});
+    chassis.turnToPoint((a ? -54 : 54), (a ? -50: -50), 1200, {.maxSpeed=100, .minSpeed=20});
     chassis.waitUntilDone();
-    chassis.moveToPoint((a ? 54 : -54), (a ? -50: -50), 1500, {.maxSpeed=100, .minSpeed=20});
+    chassis.moveToPoint((a ? -54 : 54), (a ? -50: -50), 1500, {.maxSpeed=100, .minSpeed=20});
     chassis.waitUntilDone();
-    chassis.turnToHeading((a ? 215: 135), 500, {.maxSpeed=80, .minSpeed=30}, false);
+    chassis.turnToHeading((a ? 215: 135), 1000, {.maxSpeed=80, .minSpeed=30}, false);
     chassis.waitUntilDone();
 
+    setIntakeSpeed(127, 127);
+    chassis.arcade(60, 0);
+    delay(100);
     setIntakeSpeed(127, -100);
-    chassis.arcade(50, 0);
-    delay(500);
-    chassis.arcade(20, 0);
+    delay(400);
+    chassis.arcade(30, 0);
     setIntakeSpeed(127, 127);
     delay(500);
 
@@ -291,12 +282,17 @@ void ringSideRush(){
 void goalSide(){
     bool a = (alliance == 1);
 
-    allianceStake(-alliance);
-    chassis.moveToPoint(alliance*19.5, -58, 800, {.forwards=false, .maxSpeed=80, .minSpeed=10}, false);
-    delay(100);
-    chassis.turnToHeading(180, 700);
-    chassis.waitUntilDone();
-    delay(50);
+    if (aStake) {
+        allianceStake(-alliance);
+        chassis.moveToPoint(alliance*19, -58, 800, {.forwards=false, .maxSpeed=80, .minSpeed=10}, false);
+        delay(100);
+        chassis.turnToHeading(180, 700);
+        chassis.waitUntilDone();
+        delay(50);
+    } else {
+        chassis.setPose(alliance*24, -53.6, 180);
+        chassis.setBrakeMode(E_MOTOR_BRAKE_HOLD);
+    }
 
     //goal 1
     double xcoordinate = chassis.getPose().x;
@@ -329,28 +325,32 @@ void goalSide(){
     
     if (elims) {
         if (a) {
-            chassis.moveToPoint(alliance*50, -50, 2500, {.forwards=false, .maxSpeed=100});
-            chassis.turnToPoint(alliance*10, -15, 1000);
+            chassis.moveToPoint(alliance*50, -50, 1000, {.forwards=false, .maxSpeed=100});
+            chassis.turnToPoint(alliance*13, -15, 1000);
             chassis.waitUntilDone();
             sweeper.extend();
             setIntakeSpeed(0, 0);
             delay(100);
             chassis.moveToPoint(alliance*10, -15, 1000, {.earlyExitRange=20});
-            chassis.moveToPoint(alliance*10, -15, 1000, {.maxSpeed=127});
+            chassis.moveToPoint(alliance*10, -15, 1000, {.maxSpeed=100});
             setIntakeSpeed(0, 0);
             chassis.waitUntilDone();
             setIntakeSpeed(127, 127);
             delay(100);
-            chassis.moveToPoint(alliance*42, -25, 2000, {.forwards=false});
-            chassis.turnToHeading(180, 1000, {.maxSpeed=70});
+            chassis.moveToPoint(alliance*50, -40, 1500, {.forwards=false});
             chassis.waitUntilDone();
-            xcoordinate = chassis.getPose().x;
-            chassis.moveToPoint(xcoordinate, -13, 1000, {.forwards=false, .maxSpeed=60});
+            clamp.retract();
+            sweeper.retract();
+            wallstake = true;
+            delay(200);
+            chassis.turnToPoint(alliance*45, -35, 1000, {});
+            chassis.moveToPoint(alliance*45, -30, 1000, {});
+            chassis.turnToPoint(45, -7, 1000, {.forwards=false});
+            chassis.moveToPoint(45, -7, 1000, {.forwards=false, .maxSpeed=60});
             chassis.waitUntilDone();
             clamp.extend();
-            sweeper.retract();
-            delay(300);
-            chassis.turnToPoint(alliance*43, -20, 1000);
+            delay(100);
+            wallstake = false;
             chassis.moveToPoint(alliance*43, -20, 1000);
         } else {
             chassis.moveToPoint(alliance*54, -54, 2500, {.forwards=false, .maxSpeed=100});
@@ -376,22 +376,21 @@ void goalSide(){
             chassis.waitUntilDone();
             clamp.retract();
 
-            chassis.turnToPoint(-46, -14, 1000, {.forwards=false});
-            chassis.moveToPoint(-46, -14, 1000, {.forwards=false, .maxSpeed=90});
+            chassis.turnToPoint(-50, -14, 1000, {.forwards=false});
+            chassis.moveToPoint(-50, -14, 1000, {.forwards=false, .maxSpeed=90});
             chassis.waitUntilDone();
             clamp.extend();
         }
     } else {
         if (a) {
-            chassis.moveToPoint(alliance*50, -50, 2500, {.forwards=false, .maxSpeed=100});
+            chassis.moveToPoint(alliance*50, -50, 1000, {.forwards=false, .maxSpeed=100});
             chassis.turnToPoint(alliance*13, -15, 1000);
             chassis.waitUntilDone();
-            clamp.retract();
             sweeper.extend();
             setIntakeSpeed(0, 0);
             delay(100);
-            chassis.moveToPoint(alliance*13, -15, 1000, {.earlyExitRange=20});
-            chassis.moveToPoint(alliance*13, -15, 1000, {.maxSpeed=100});
+            chassis.moveToPoint(alliance*10, -15, 1000, {.earlyExitRange=20});
+            chassis.moveToPoint(alliance*10, -15, 1000, {.maxSpeed=100});
             setIntakeSpeed(0, 0);
             chassis.waitUntilDone();
             setIntakeSpeed(127, 127);
@@ -400,12 +399,12 @@ void goalSide(){
             chassis.waitUntilDone();
             sweeper.retract();
             delay(100);
-            chassis.turnToPoint(alliance*30, -23, 1000);
-            chassis.moveToPoint(alliance*30, -23, 1000);
+            chassis.turnToPoint(alliance*25, -23, 1000);
+            chassis.moveToPoint(alliance*25, -23, 1000);
             chassis.waitUntilDone();
             delay(600);
-            chassis.turnToPoint(alliance*18, -13, 1000);
-            chassis.moveToPoint(alliance*18, -13, 1000);
+            chassis.turnToPoint(alliance*10, -15, 1000);
+            chassis.moveToPoint(alliance*10, -15, 1000);
             chassis.waitUntilDone();
             setIntakeSpeed(0, 0);
         } else {
@@ -428,7 +427,6 @@ void goalSide(){
             delay(500);
             chassis.moveToPoint(-50, -50, 1000, {.forwards=false});
 
-
             chassis.turnToPoint(alliance*18, -15, 1000);
             chassis.moveToPoint(alliance*18, -15, 2000);
             chassis.waitUntilDone();
@@ -442,30 +440,34 @@ void goalSide(){
 
 void goalSideRush(){
     bool a = (alliance == 1);
-    chassis.setPose(48+14.1, -48-2.4, -18.1);
+    chassis.setPose((a ? 62.1 : -33.6), -50.4, -18.1);
 
     wallstake=true;
 
     setIntakeSpeed(0, 127);
-    chassis.moveToPoint(50, -17, 2000, {.maxSpeed=127, .minSpeed=90});
+    chassis.moveToPoint((a ? 50 : -45), (a? -17: -21), 2000, {.maxSpeed=127, .minSpeed=90});
     delay(100);
     sweeper.extend();
     chassis.waitUntilDone();
     setIntakeSpeed(0, 0);
-    chassis.moveToPoint(53, -33, 1000, {.forwards=false});
+    chassis.moveToPoint((a ? 53 : -43), -33, 1000, {.forwards=false});
     chassis.waitUntilDone();
     sweeper.retract();
-    chassis.turnToPoint(57, -18, 1000, {.forwards=false});
-    chassis.moveToPoint(57, -18, 1500, {.forwards=false, .maxSpeed=60});
+    chassis.turnToPoint((a ? 57 : -40), -18, 1000, {.forwards=false});
+    chassis.moveToPoint((a ? 57 : -40), -18, 1500, {.forwards=false, .maxSpeed=60});
     chassis.waitUntilDone();
     clamp.extend();
-    delay(200);
+    delay(100);
     setIntakeSpeed(127, 0);
     wallstake=false;
-    delay(500);
+    delay(600);
     clamp.retract();
-    chassis.turnToPoint(24, -20, 1000, {.forwards=false});
-    chassis.moveToPoint(24, -20, 1000, {.forwards=false, .maxSpeed=60});
+    delay(100);
+    chassis.arcade(127, 0);
+    delay(200);
+    chassis.arcade(0, 0);
+    chassis.turnToPoint(alliance*24, -20, 1000, {.forwards=false});
+    chassis.moveToPoint(alliance*24, -20, 1000, {.forwards=false, .maxSpeed=60});
     chassis.waitUntil(24);
     clamp.extend();
     setIntakeSpeed(127, 127);
@@ -473,9 +475,9 @@ void goalSideRush(){
     // chassis.turnToPoint(46, -16, 1000);
     // chassis.moveToPoint(46, -16, 1000);
 
-    chassis.turnToPoint((a ? 54 : -53), (a ? -49: -50), 800, {.maxSpeed=100, .minSpeed=20});
+    chassis.turnToPoint((a ? 54 : -53), (a ? -49: -49), 800, {.maxSpeed=100, .minSpeed=20});
     chassis.waitUntilDone();
-    chassis.moveToPoint((a ? 54 : -53), (a ? -49: -50), 1500, {.maxSpeed=100, .minSpeed=20});
+    chassis.moveToPoint((a ? 54 : -53), (a ? -49: -49), 1500, {.maxSpeed=100, .minSpeed=20});
     chassis.waitUntilDone();
     chassis.turnToHeading((a ? 135: 215), 500, {.maxSpeed=80, .minSpeed=30}, false);
     chassis.waitUntilDone();
@@ -489,34 +491,37 @@ void goalSideRush(){
 
     chassis.arcade(-127, 0);
     delay(400);
-
-    setIntakeSpeed(127, -120);
     chassis.arcade(90, 0);
     delay(500);
     chassis.arcade(20, 0);
     setIntakeSpeed(127, 127);
     delay(500);
 
-    chassis.turnToPoint(alliance*54, -54, 1000, {.forwards=false});
-    chassis.moveToPoint(alliance*54, -54, 1000, {.forwards=false});
+    chassis.turnToPoint(alliance*50, -50, 1000, {.forwards=false});
+    chassis.moveToPoint(alliance*50, -50, 1000, {.forwards=false});
 
-    chassis.turnToHeading(-45, 1000);
+    chassis.turnToHeading((a ? -45 : 45), 1000);
     chassis.waitUntilDone();
     clamp.retract();
     delay(200);
 
-    chassis.turnToPoint(50, -16, 1000, {.forwards=false});
-    chassis.moveToPoint(50, -16, 1000, {.forwards=false});
+    chassis.turnToPoint((a ? 54 : -43), (a ? -14 : -10), 1000, {.forwards=false});
+    chassis.moveToPoint((a ? 54 : -43), (a ? -14 : -10), 1000, {.forwards=false, .maxSpeed=60});
 
     chassis.waitUntilDone();
     clamp.extend();
+    delay(300);
+    chassis.moveToPoint(-43, -20, 1000);
+
 
 
 }
 
 void skills() {
+
+    coloursort = false;
     
-    chassis.setPose(0.5, -62, -90);
+    chassis.setPose(1, -62, -90);
     chassis.setBrakeMode(E_MOTOR_BRAKE_HOLD);
 
     setIntakeSpeed(-127, 0);
@@ -537,8 +542,8 @@ void skills() {
     chassis.moveToPoint(22, -28, 800);
 
     //goal 1 ring 2
-    chassis.turnToPoint(2, -8, 600);
-    chassis.moveToPoint(2, -8, 1000);
+    chassis.turnToPoint(2, -6, 600);
+    chassis.moveToPoint(2, -6, 1000);
 
     //goal 1 ring 3
     chassis.turnToPoint(20, 24, 600);
@@ -550,44 +555,48 @@ void skills() {
     wallstake=true;
 
     //wallstake 1
-    chassis.turnToPoint(40, 1, 800);
-    chassis.moveToPoint(40, 1, 800, {.maxSpeed=80});
+    chassis.turnToPoint(40, 4, 1000);
+    chassis.moveToPoint(40, 4, 1000, {.maxSpeed=80});
     chassis.waitUntilDone();
     delay(100);
     chassis.turnToHeading(90, 1200, {.maxSpeed=70});
     delay(200);
     wallstakeExtend();
     chassis.waitUntilDone();
-    moveDistance(19, {.maxSpeed=100});
+    moveDistance(20, {.maxSpeed=120});
     setIntakeSpeed(0, 127);
     chassis.waitUntilDone();
+    delay(100);
+    chassis.arcade(10, -60);
     delay(200);
+    chassis.arcade(0, 0);
+    delay(200);
+    wallstakearm.retract();
 
     //goal 1 ring 4 & 5
     chassis.waitUntilDone();
     moveDistance(-10, {.forwards=false});
     chassis.waitUntilDone();
     chassis.turnToPoint(56, 46, 800);
-    chassis.moveToPoint(56, 46, 1000);
-    wallstakearm.retract();
+    chassis.moveToPoint(56, 46, 1500);
     setIntakeSpeed(127, 127);
     chassis.waitUntilDone();
     delay(200);
 
     //goal 1 ring 6
-    chassis.turnToPoint(45, 58, 500);
+    chassis.turnToPoint(45, 58, 800);
     chassis.waitUntilDone();
     delay(200);
-    chassis.moveToPoint(45, 58, 800);
+    chassis.moveToPoint(45, 58, 1000);
 
     //drop goal 1
-    chassis.turnToHeading(-105, 800);
+    chassis.turnToHeading(-100, 800);
     chassis.waitUntilDone();
     chassis.arcade(-60, 0);
     delay(500);
     chassis.arcade(0, 0);
     clamp.retract();
-    chassis.turnToHeading(-125, 800);
+    chassis.turnToHeading(-135, 800);
     chassis.waitUntilDone();
     
     //goal 2
@@ -597,8 +606,8 @@ void skills() {
     chassis.turnToPoint(-2, 51, 800, {.forwards=false});
     setIntakeSpeed(0, 0);
     chassis.moveToPoint(-2, 51, 1500, {.forwards=false, .minSpeed=40, .earlyExitRange=24});
-    chassis.moveToPoint(-2, 51, 1500, {.forwards=false, .maxSpeed=40, .minSpeed=10});
-    while (chassis.getPose().x > 9) {
+    chassis.moveToPoint(-2, 51, 1500, {.forwards=false, .maxSpeed=40});
+    while (chassis.getPose().x > 6) {
         delay(50);
     }
     clamp.extend();
@@ -607,18 +616,18 @@ void skills() {
     delay(200);
 
     //goal 2 ring 1
-    chassis.turnToPoint(-20, 30, 800);
-    chassis.moveToPoint(-20, 30, 1000);
+    chassis.turnToPoint(-24, 30, 800);
+    chassis.moveToPoint(-24, 30, 1000);
 
     //wallstake 2 ring
-    chassis.turnToPoint(-40, 29, 800);
-    chassis.moveToPoint(-40, 29, 1000);
+    chassis.turnToPoint(-45, 26, 800);
+    chassis.moveToPoint(-45, 26, 1000);
     chassis.waitUntilDone();
     wallstake=true;
 
     //wallstake 2
-    chassis.turnToPoint(-36, 2, 800);
-    chassis.moveToPoint(-36, 2, 800, {.maxSpeed=90});
+    chassis.turnToPoint(-45, 5, 1000);
+    chassis.moveToPoint(-45, 5, 1000, {.maxSpeed=90});
     chassis.waitUntilDone();
     delay(100);
     chassis.turnToHeading(-90, 1200, {.maxSpeed=80});
@@ -627,20 +636,23 @@ void skills() {
     chassis.waitUntilDone();
     moveDistance(19, {.maxSpeed=100});
     chassis.waitUntilDone();
+    chassis.arcade(0, -60);
     delay(200);
+    chassis.arcade(0, 0);
+    delay(200);
+    wallstakearm.retract();
 
     //goal 2 ring 2 - 5
     moveDistance(-9, {.forwards=false});
     chassis.waitUntilDone();
-    chassis.turnToPoint(-42, -55, 800);
-    wallstakearm.retract();
+    chassis.turnToPoint(-50, -53, 800);
     setIntakeSpeed(127, 127);
-    chassis.moveToPoint(-42, -55, 1000, {.maxSpeed=100, .minSpeed=50, .earlyExitRange=36});
-    chassis.moveToPoint(-42, -55, 1000, {.maxSpeed=50, .minSpeed=20});
+    chassis.moveToPoint(-50, -53, 1000, {.maxSpeed=100, .minSpeed=50, .earlyExitRange=36});
+    chassis.moveToPoint(-50, -53, 1000, {.maxSpeed=50});
 
     //goal 2 ring 6
-    chassis.turnToPoint(-50, -48, 800);
-    chassis.moveToPoint(-50, -48, 1000);
+    chassis.turnToPoint(-63, -48, 800);
+    chassis.moveToPoint(-63, -48, 1000);
 
     //drop goal 2
     chassis.turnToHeading(20, 800);
@@ -671,11 +683,11 @@ void skills() {
     delay(500);
     chassis.arcade(0, 0);
 
-    chassis.turnToPoint(-5, 58, 800);
-    chassis.moveToPoint(-5, 58, 1500);
+    chassis.turnToPoint(-15, 60, 800);
+    chassis.moveToPoint(-15, 60, 1500);
     chassis.turnToHeading(95, 800);
     chassis.waitUntilDone();
-    moveDistance(-36, {.forwards=false, .maxSpeed=90});
+    moveDistance(-40, {.forwards=false, .maxSpeed=90});
     chassis.waitUntilDone();
     chassis.arcade(-60, 0);
     delay(400);
@@ -705,8 +717,8 @@ void skills() {
     // clamp.retract();
     // setIntakeSpeed(0, 0);
 
-    chassis.turnToPoint(-48, -24, 800);
-    chassis.moveToPoint(-48, -24, 1000);
+    chassis.turnToPoint(-48, -36, 1000);
+    chassis.moveToPoint(-48, -36, 1500);
     chassis.waitUntilDone();
     delay(100);
 
@@ -714,32 +726,29 @@ void skills() {
     // chassis.waitUntilDone();
     
 
-    chassis.turnToPoint(-14, -46, 800, {.forwards=false});
-    chassis.moveToPoint(-14, -46, 1500, {.forwards=false, .maxSpeed=60});
-
-    while (chassis.getPose().y > -42) {
-        delay(50);
-    }
+    chassis.turnToPoint(-24, -46, 800, {.forwards=false});
+    chassis.moveToPoint(-24, -46, 1500, {.forwards=false, .maxSpeed=70});
+    chassis.waitUntilDone();
     clamp.extend();
     chassis.waitUntilDone();
     delay(200);
     wallstake=false;
     setIntakeSpeed(127, 127);
 
-    chassis.turnToPoint(-16, -24, 800);
-    chassis.moveToPoint(-16, -24, 1000);
+    chassis.turnToPoint(-24, -24, 800);
+    chassis.moveToPoint(-24, -24, 1000);
     setIntakeSpeed(127, 127);
 
-    chassis.turnToPoint(0, -48, 800, {.forwards=false});
-    chassis.moveToPoint(0, -48, 1000, {.forwards=false});
-    chassis.turnToPoint(48, -0, 800);
-    chassis.moveToPoint(48, -0, 1500);
+    chassis.turnToPoint(0, -60, 800, {.forwards=false});
+    chassis.moveToPoint(0, -60, 1000, {.forwards=false});
+    chassis.turnToPoint(48, -24, 800);
+    chassis.moveToPoint(48, -24, 1500);
     chassis.waitUntilDone();
     delay(100);
 
-    chassis.turnToPoint(58, -42, 800);
-    chassis.moveToPoint(58, -42, 1000, {.minSpeed=50, .earlyExitRange=24});
-    chassis.moveToPoint(58, -42, 1000, {.maxSpeed=80});
+    chassis.turnToPoint(48, -48, 800);
+    chassis.moveToPoint(48, -48, 1000, {.minSpeed=50, .earlyExitRange=24});
+    chassis.moveToPoint(48, -48, 1000, {.maxSpeed=80});
 
     // chassis.turnToPoint(65, -36, 800);
     // chassis.moveToPoint(65, -36, 1000);
@@ -752,8 +761,8 @@ void skills() {
     delay(400);
     chassis.arcade(0, 0);
 
-    chassis.turnToPoint(25, 0, 800);
-    chassis.moveToPoint(25, 0, 1000);
+    chassis.turnToPoint(12, -12, 800);
+    chassis.moveToPoint(12, -12, 1000);
     chassis.turnToHeading(-60, 800);
     chassis.waitUntilDone();
     chassis.arcade(80, 0);
